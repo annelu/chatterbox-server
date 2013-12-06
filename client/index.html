@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>chatterbox</title>
+  <link rel="stylesheet" href="styles/styles.css">
+
+  <!-- external javascript -->
+<!-- /Users/hackreactor/code/annelu/2013-11-chatterbox-server/client/client/bower_components/jquery -->
+
+  <script src="client/bower_components/jquery/jquery.min.js"></script> 
+  <script src="client/bower_components/underscore/underscore-min.js"></script>
+  <script src="http://www.parsecdn.com/js/parse-1.2.13.min.js"></script>
+  <script src="bower_components/backbone/backbone.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
+
+
+  <!-- internal javascript -->
+  <script src="scripts/config.js"></script>
+  <script src="scripts/app.js"></script>
+  <!-- <script src="scripts/app2.js"></script> -->
+  <title>Chat-Client</title>
+</head>
+<body>
+
+<div id="heading"><h1>Chatterbox</h1></div>
+
+<div id="left">
+
+</div>
+
+
+<div id="right">
+  <form>
+    <span class="subtitle">Add to the Chatter</span>
+    <textarea class="newMsg" name="userText" value=""></textarea>
+    <button class="submit" type="button">Chatter</button>
+  </form>
+
+  <div id="roomLabel">
+    <span class="subtitle">Current Room:</span><span class="currentRoom"></span></h3>
+  </div>
+  <div id="friendLabel">
+    <span class="subtitle">Befriended:</span>
+    <ul id="friendList"></ul>
+  </div>
+</div>
+
+
+<!-- OLD STUFF BELOW HERE -->
+
+<!--
+  <div id="main">
+    <div class="nav">
+      <form><input type="paragraph" name="userText" value=""/>
+        <button class="submit" type="button">Submit</button>
+        <button class="reset" type="button">Reset View</button> 
+      </form>
+    </div>
+    <div class="clear"></div>
+    <div id="left">
+      <div class="columnHeader">
+        <span class="columnTitle">Current Room:</span>
+        <span class="columnSubtitle currentRoom"></span>
+      </div>
+    </div>
+    <div id="right">
+      <div class="columnHeader">
+        <span class="columnTitle">User View:</span>
+        <span class="columnSubtitle userFocus"></span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+
+ EXAMPLE MESSAGE FOR TESTING 
+  <div class="message">
+    <div class="username">Kyle</div>
+    <div class="roomname">BackPorch</div>
+    <div class="text">I am the very model of a modern major general.</div>
+    <div class="createdAt">12:15 PM 11/24/13</div>
+  </div>
+  <div class="message">
+    <div class="username">Kyle</div>
+    <div class="roomname">BackPorch</div>
+    <div class="text">I am the very model of a modern major general.</div>
+    <div class="createdAt">12:15 PM 11/24/13</div>
+  </div>
+  <div class="message">
+    <div class="username">Kyle</div>
+    <div class="roomname">BackPorch</div>
+    <div class="text">I am the very model of a modern major general.</div>
+    <div class="createdAt">12:15 PM 11/24/13</div>
+  </div>
+  <div class="message">
+    <div class="username">Kyle</div>
+    <div class="roomname">BackPorch</div>
+    <div class="text">I am the very model of a modern major general.</div>
+    <div class="createdAt">12:15 PM 11/24/13</div>
+  </div>
+  <div class="message">
+    <div class="username">Kyle</div>
+    <div class="roomname">BackPorch</div>
+    <div class="text">I am the very model of a modern major general.</div>
+    <div class="createdAt">12:15 PM 11/24/13</div>
+  </div>
+  <div class="message">
+    <div class="username">Kyle</div>
+    <div class="roomname">BackPorch</div>
+    <div class="text">I am the very model of a modern major general.</div>
+    <div class="createdAt">12:15 PM 11/24/13</div>
+  </div>
+  <div class="message">
+    <div class="username">Kyle</div>
+    <div class="roomname">BackPorch</div>
+    <div class="text">I am the very model of a modern major general.</div>
+    <div class="createdAt">12:15 PM 11/24/13</div>
+  </div> -->
