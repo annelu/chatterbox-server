@@ -76,10 +76,11 @@ var getMessages = function(){
   console.log('getting messages');
   $.ajax({
     // always use this url
-    url: 'https://api.parse.com/1/classes/chatterbox',
+    // url: 'https://api.parse.com/1/classes/chatterbox',
+    url: 'http://127.0.0.1:8080/messages',
     type: 'GET',
     contentType: 'application/json',
-    data: {"order" :"-createdAt"},
+    // data: {"order" :"-createdAt"},
     // {"where": {
     //       "objectId":"teDOY3Rnpe"
     //       // "order":"-createdAt"
