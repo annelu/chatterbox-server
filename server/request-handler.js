@@ -6,9 +6,9 @@
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
 
 
+var messages = [];
 
 var handleRequest = function(request, response) {
-  var messages = [];
   var toSend = "";
   var statusCode= 200;
 
