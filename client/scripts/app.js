@@ -77,7 +77,7 @@ var getMessages = function(){
   $.ajax({
     // always use this url
     // url: 'https://api.parse.com/1/classes/chatterbox',
-    url: 'http://127.0.0.1:8080/messages',
+    url: 'http://127.0.0.1:8080/classes',
     type: 'GET',
     // contentType: 'application/json',
     // contentType: 'text/plain',
@@ -155,7 +155,7 @@ var composeMessage = function(userText) {
 var sendMessage = function(input) {
   var toSend = composeMessage(input);
   $.ajax({
-    url: 'http://127.0.0.1:8080/messages',
+    url: 'http://127.0.0.1:8080/classes',
     // url: 'https://api.parse.com/1/classes/chatterbox',
     type: 'POST',
     data: JSON.stringify(toSend),
