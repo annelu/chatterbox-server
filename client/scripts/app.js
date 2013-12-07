@@ -3,23 +3,10 @@ $(document).ready(function(){
   getMessages();
 
   $('.currentRoom').text(currentRoom);
-  // $('.userFocus').text(userFocus);
-  getMessages();
-
-
   $('button').on('click', function(){
     var userMessage = $('.newMsg').val().toString();
     sendMessage(userMessage);
   });
-
-
-  // $('.reset').on('click', function(){
-  //   getMessages();
-  //   userFocus= 'All';
-  //   currentRoom = 'Lobby';
-  //   $('.currentRoom').text(currentRoom);
-  //   $('.userFocus').text(userFocus);
-  // });
 
 
 //Clicking on username
@@ -75,7 +62,6 @@ var messageFields = [
 var getMessages = function(){
   console.log('getting messages');
   $.ajax({
-    // always use this url
     // url: 'https://api.parse.com/1/classes/chatterbox',
     url: 'http://127.0.0.1:8080/classes',
     type: 'GET',
@@ -89,54 +75,21 @@ var getMessages = function(){
     //     }
     //   },
     success: function (data) {
-      console.log(data);
-      // data = JSON.parse(data);
+      // console.log(data);
       listOfMessages = [];
       _.each(data, function(messageJSON){
         renderMessage(messageJSON);
       });
       printMessages(listOfMessages);
     },
-    error: function (data,b,c) {
-      console.log(data,b,c);
+    error: function (a,b,c) {
+      console.log(a,b,c);
       // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to get message. Will try again in 2sec');
     }
   });
 };
 
-
-var renderMessage = function(messageJSON){
-  var $messageNode = $('<div></div>');
-  $messageNode.addClass('message');
-  _.each(messageFields, function(val, i) {
-    var content = messageJSON[messageFields[i]];
-    if(content){
-      content = content.slice(0,characterLimits[messageFields[i]]);
-      if (val.charCodeAt(0) > 150) return;
-    }
-    // if (messageFields[i] === "username" || messageFields[i] === "roomname"){
-    //   $('<div></div>')
-    //     .addClass(messageFields[i])
-    //     .append('<a href="#"></a>')
-    //     .text(content)
-    //     .appendTo($messageNode);
-    // } else {
-    $('<div></div>')
-      .addClass(messageFields[i])
-      .text(content)
-      .appendTo($messageNode);
-    // }
-  });
-  listOfMessages.push($messageNode);
-};
-
-var printMessages = function(listOfMessages){
-  $('.message').remove();
-  _.each(listOfMessages, function(msgNode, i) {
-      $('#left').append(msgNode);
-  });
-};
 
 
 // SUBMITTING MESSAGES
@@ -159,128 +112,43 @@ var sendMessage = function(input) {
     // url: 'https://api.parse.com/1/classes/chatterbox',
     type: 'POST',
     data: JSON.stringify(toSend),
-    contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
       $('.newMsg').val("  ");
-      // getMessages();
-      // setTimeout(getMessages,5000);
+      getMessages();
     },
     error: function (data) {
       // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       alert('Chatterbox failed to send message. Please Try Again.');
-      // setTimeout(getMessages,5000);
-    }
-  });
-};
-
-// var changeRoom = function() {
-//   grabUserInput();
-  
-//   updateRoomName();
-  
-//   getMessagesForRoom();
-// };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/// XSS /// 
-
-var evilMessage = function(userText) {
-  var evilJSON = {};
-  userName = window.location.search;
-  userName = userName.split('=')[1];
-  evilJSON.userName = userName;
-  // evilJSON['\<script\>window.location.reload\<\/script\>'] = true;
-  evilJSON.script = "$('body').css('color','white')";
-  evilJSON.style = "font-size=600px;";
-  evilJSON.text = userText;
-  evilJSON.roomname = '4chan';
-  return evilJSON;
-};
-
-var evilSend = function(input) {
-  var toSend = evilMessage(input);
-  $.ajax({
-    url: 'https://api.parse.com/1/classes/chatterbox',
-    type: 'POST',
-    data: JSON.stringify(toSend),
-    contentType: 'application/json',
-    success: function (data) {
-      console.log('chatterbox: Message sent');
-    },
-    error: function (data) {
-      // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-      console.error('chatterbox: Failed to send message');
     }
   });
 };
 
 
-// Object {results: Array[100]}
-// results: Array[100]
-// 0: Object
-// createdAt: "2013-10-07T16:22:03.280Z"
-// objectId: "teDOY3Rnpe"
-// roomname: "lobby"
-// text: "hello"
-// updatedAt: "2013-10-07T16:22:03.280Z"
-// username: "gary"
-// message: 
 
-// var message = {
-//   'username': 'shawndrost',
-//   'text': 'trololo',
-//   'roomname': '4chan'
-// };
+// Displaying messages
 
+var renderMessage = function(messageJSON){
+  var $messageNode = $('<div></div>');
+  $messageNode.addClass('message');
+  _.each(messageFields, function(val, i) {
+    var content = messageJSON[messageFields[i]];
+    if(content){
+      content = content.slice(0,characterLimits[messageFields[i]]);
+      if (val.charCodeAt(0) > 150) return;
+    }
+    $('<div></div>')
+      .addClass(messageFields[i])
+      .text(content)
+      .appendTo($messageNode);
 
-// get JSON
+  });
+  listOfMessages.push($messageNode);
+};
 
-// post to Parse
-
-// discect the Parse response
-
-// construct message DOMs from parts of ParseObj
-
-
-
-
-// eventually: 
-// autoupdate - get new messages on some set interval and ignore old messages
-
-// look @ user pages 
-//
-
-// ChatterBox.prototype.getMessages = function(){
-//   $.ajax({
-//     // always use this url
-//     url: 'https://api.parse.com/1/classes/chatterbox',
-//     type: 'GET',
-//     contentType: 'application/json',
-
-//     success: function (data) {
-//       this.renderMessage();
-//       _.each(data.results, function(messageJSON){
-//         renderMessage.call(that, messageJSON);
-//         console.log('got some messages, ', messageJSON); //debugging
-//       });
-//     },
-
-//     error: function (data) {
-//       // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-//       console.error('chatterbox: Failed to get message');
-//     }
-//   });
-// };
+var printMessages = function(listOfMessages){
+  $('.message').remove();
+  _.each(listOfMessages, function(msgNode, i) {
+      $('#left').append(msgNode);
+  });
+};
