@@ -25,11 +25,19 @@
   if (requestURL[1] === 'classes') {
 
     if (request.method === "GET"){
-      headers['Content-Type'] = 'application/json';
-      statusCode = 200;
-      toSend= JSON.stringify(messages);
-      response.writeHead(statusCode, headers);
-      response.end(toSend);
+      // headers['Content-Type'] = 'application/json';
+      // statusCode = 200;
+      // toSend= JSON.stringify(messages);
+      // response.writeHead(statusCode, headers);
+      // response.end(toSend);
+
+      fs.readFile('messages.txt', {encoding: 'utf8'},function(err, json){
+        if (err) {throw err;}
+        response.writeHeader(200, {'Content-Type': 'application/json'});
+        console.log(json);
+        response.write(JSON.stringify(json));
+        response.end();
+      });
     }
 
     if (request.method === "POST"){
@@ -42,9 +50,11 @@
       });
 
       request.on('end', function(){
-        fullbody = JSON.parse(fullbody);
-        messages.push(fullbody);
+        // fullbody = JSON.parse(fullbody);
         toSend = JSON.stringify(messages);
+        fs.appendFile('messages.txt', fullbody, function(err) {
+          if (err) {throw err;}
+        });
         response.writeHead(statusCode, headers);
         response.end(toSend);
       });

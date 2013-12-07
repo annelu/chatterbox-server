@@ -1,0 +1,1 @@
+{"username":"anne","text":"  New message","roomname":"Lobby"}{"username":"anne","text":"  Message 1","roomname":"Lobby"}{"username":"anne","text":"ad","roomname":"Lobby"}

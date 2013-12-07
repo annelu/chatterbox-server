@@ -75,7 +75,7 @@ var getMessages = function(){
     //     }
     //   },
     success: function (data) {
-      // console.log(data);
+      console.log(data);
       listOfMessages = [];
       _.each(data, function(messageJSON){
         renderMessage(messageJSON);
