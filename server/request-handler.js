@@ -1,12 +1,13 @@
-/* You should implement your request handler function in this file.
- * And hey! This is already getting passed to http.createServer()
- * in basic-server.js. But it won't work as is.
- * You'll have to figure out a way to export this function from
- * this file and include it in basic-server.js so that it actually works.
- * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
- var url = require('url');
 
+/* * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
+
+//NODE MODULES
+ var url = require('url');
+ var fs = require('fs');
+
+//Where we store our messages
  var messages = [];
+
 
  var handleRequest = function(request, response) {
   var toSend = "";
@@ -16,18 +17,8 @@
   var requestURL = urlObject.pathname.split('/');
   console.log(requestURL);
 
-  /* Without this line, this server wouldn't work. See the note
-  * below about CORS. */
+  /* Without this line, this server wouldn't work. See the note below about CORS. */
   var headers = defaultCorsHeaders;
-
-  /* the 'request' argument comes from nodes http module. It includes info about the
-  request - such as what URL the browser is requesting. */
-
-  /* Documentation for both request and response can be found at
-  * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
-
-  // console.log(request.url);
-  // console.log(request);
 
   console.log("Serving request type " + request.method + " for url " + request.url);
 
@@ -62,11 +53,40 @@
   }
 
   else if (requestURL[1] === "" && request.method === "GET"){
-    headers['Content-Type'] = 'text/html';
-    statusCode = 200;
-    toSend = "<div>This is some html </div>";
-    response.writeHead(statusCode, headers);
-    response.end(toSend);
+    fs.readFile('../client/index.html', function(err, html) {
+      if (err) {
+        throw err;
+      }
+      response.writeHeader(200, {'Content-Type': 'text/html'});
+      response.write(html);
+      response.end();
+    });
+  }
+
+  else if (requestURL[1] === "scripts" && request.method === "GET"){ //Fix This line
+    var file = requestURL[2];
+    console.log(file);
+    fs.readFile('../client/scripts/'+file, function(err, js) {
+      if (err) {
+        throw err;
+      }
+      response.writeHeader(200, {'Content-Type': 'text/javascript'});
+      response.write(js);
+      response.end();
+    });
+  }
+
+  else if (requestURL[1] === "styles" && request.method === "GET"){ //Fix This line
+    var file = requestURL[2];
+    console.log(file);
+    fs.readFile('../client/styles/'+file, function(err, css) {
+      if (err) {
+        throw err;
+      }
+      response.writeHeader(200, {'Content-Type': 'text/css'});
+      response.write(css);
+      response.end();
+    });
   }
 };
 
