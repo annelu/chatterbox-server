@@ -4,13 +4,17 @@
  * You'll have to figure out a way to export this function from
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
-
+var url = require('url');
 
 var messages = [];
 
 var handleRequest = function(request, response) {
   var toSend = "";
-  var statusCode= 200;
+  var statusCode= 404;
+  // var requestURL = request.url.split("/").slice(1);
+  var urlObject = url.parse(request.url);
+  var requestURL = urlObject.pathname.split('/').slice(1);
+  console.log(requestURL);
 
   /* Without this line, this server wouldn't work. See the note
    * below about CORS. */
@@ -29,11 +33,18 @@ var handleRequest = function(request, response) {
 
   //HANDLE GETS
   if (request.method === "GET"){
-    statusCode = 200;
-    if(request.url === '/classes/messages'){
+    if (requestURL[0] === 'classes') {
+      statusCode = 200;
       toSend= messages;
     }
-    toSend= messages;
+    // if(request.url === '/classes/room1'){
+    //   statusCode = 200;
+    //   toSend= messages;
+    // } else if(request.url === '/classes/messages'){
+    //   statusCode = 200;
+    //   toSend= messages;
+    // }
+    // statusCode = 200;
   }
 
   //HANDLE POSTS
@@ -41,11 +52,7 @@ var handleRequest = function(request, response) {
     statusCode = 201;
     var fullbody = '';
     request.on('data', function(chunk){
-      // var newMsg = 
       fullbody += chunk;
-      // console.log(typeof process.stdout.write(chunk));
-      // console.log(typeof newMsg);
-      // messages.push(newMsg);
     });
     request.on('end', function(){
       fullbody = JSON.parse(fullbody);
