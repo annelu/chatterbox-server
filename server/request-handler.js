@@ -42,7 +42,8 @@ var handleRequest = function(request, response) {
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
   if(request.url === '/messages'){
-    response.end(messages);
+    console.log("this is what request-handler is sending to chatter box: "+ JSON.stringify(messages));
+    response.end(JSON.stringify(messages));
     return;
   }
 
