@@ -8,12 +8,13 @@
 
 
 var handleRequest = function(request, response) {
-  var messages ={
+  var testMessages = [];
+  var messages = [{
     username:"Kyle",
     roomname:"BackPorch",
     text:"I am the very model of a modern major general.",
     createdAt:"12:15 PM 11/24/13"
-  };
+  }];
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
 

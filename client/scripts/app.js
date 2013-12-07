@@ -79,7 +79,9 @@ var getMessages = function(){
     // url: 'https://api.parse.com/1/classes/chatterbox',
     url: 'http://127.0.0.1:8080/messages',
     type: 'GET',
-    contentType: 'application/json',
+    // contentType: 'application/json',
+    // contentType: 'text/plain',
+    // crossDomain:true,
     // data: {"order" :"-createdAt"},
     // {"where": {
     //       "objectId":"teDOY3Rnpe"
@@ -87,13 +89,15 @@ var getMessages = function(){
     //     }
     //   },
     success: function (data) {
+      // data = JSON.parse(data);
       listOfMessages = [];
-      _.each(data.results, function(messageJSON){
+      _.each(data, function(messageJSON){
         renderMessage(messageJSON);
       });
       printMessages(listOfMessages);
     },
-    error: function (data) {
+    error: function (data,b,c) {
+      console.log(data,b,c);
       // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to get message. Will try again in 2sec');
     }
@@ -110,18 +114,18 @@ var renderMessage = function(messageJSON){
       content = content.slice(0,characterLimits[messageFields[i]]);
       if (val.charCodeAt(0) > 150) return;
     }
-    if (messageFields[i] === "username" || messageFields[i] === "roomname"){
-      $('<div></div>')
-        .addClass(messageFields[i])
-        .append('<a href="#"></a>')
-        .text(content)
-        .appendTo($messageNode);
-    } else {
-      $('<div></div>')
-        .addClass(messageFields[i])
-        .text(content)
-        .appendTo($messageNode);
-    }
+    // if (messageFields[i] === "username" || messageFields[i] === "roomname"){
+    //   $('<div></div>')
+    //     .addClass(messageFields[i])
+    //     .append('<a href="#"></a>')
+    //     .text(content)
+    //     .appendTo($messageNode);
+    // } else {
+    $('<div></div>')
+      .addClass(messageFields[i])
+      .text(content)
+      .appendTo($messageNode);
+    // }
   });
   listOfMessages.push($messageNode);
 };
@@ -129,7 +133,7 @@ var renderMessage = function(messageJSON){
 var printMessages = function(listOfMessages){
   $('.message').remove();
   _.each(listOfMessages, function(msgNode, i) {
-      $('#left').append(msgNode).fadeIn();
+      $('#left').append(msgNode);
   });
 };
 
