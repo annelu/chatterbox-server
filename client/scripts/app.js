@@ -93,7 +93,6 @@ var getMessages = function(){
 
 
 // SUBMITTING MESSAGES
-
 var composeMessage = function(userText) {
   var sendJSON = {};
   userName = window.location.search;
@@ -103,7 +102,6 @@ var composeMessage = function(userText) {
   sendJSON.roomname = currentRoom;
   return sendJSON;
 };
-
 
 var sendMessage = function(input) {
   var toSend = composeMessage(input);
@@ -119,7 +117,8 @@ var sendMessage = function(input) {
     },
     error: function (data) {
       // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-      alert('Chatterbox failed to send message. Please Try Again.');
+      console.log(data);
+      console.log('Chatterbox failed to send message. Please Try Again.');
     }
   });
 };
