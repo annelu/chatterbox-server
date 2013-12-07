@@ -8,32 +8,50 @@
 
 
 var handleRequest = function(request, response) {
-  var testMessages = [];
-  var messages = [{
-    username:"Kyle",
-    roomname:"BackPorch",
-    text:"I am the very model of a modern major general.",
-    createdAt:"12:15 PM 11/24/13"
-  }];
+  var messages = [];
+  var toSend = "";
+  var statusCode= 200;
+
+  /* Without this line, this server wouldn't work. See the note
+   * below about CORS. */
+  var headers = defaultCorsHeaders;
+  headers['Content-Type'] = 'application/json';
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
 
   /* Documentation for both request and response can be found at
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
 
-   // console.log(request.url);
-
-
+  // console.log(request.url);
+  // console.log(request);
 
   console.log("Serving request type " + request.method + " for url " + request.url);
 
-  var statusCode = 200;
+  //HANDLE GETS
+  if (request.method === "GET"){
+    statusCode = 200;
+    if(request.url === '/classes/messages'){
+      toSend= messages;
+    }
+    toSend= messages;
+  }
 
-  /* Without this line, this server wouldn't work. See the note
-   * below about CORS. */
-  var headers = defaultCorsHeaders;
-
-  headers['Content-Type'] = 'application/json';
+  //HANDLE POSTS
+  else if (request.method === "POST"){
+    statusCode = 201;
+    var fullbody = '';
+    request.on('data', function(chunk){
+      // var newMsg = 
+      fullbody += chunk;
+      // console.log(typeof process.stdout.write(chunk));
+      // console.log(typeof newMsg);
+      // messages.push(newMsg);
+    });
+    request.on('end', function(){
+      fullbody = JSON.parse(fullbody);
+      messages.push(fullbody);
+    });
+  }
 
   /* .writeHead() tells our server what HTTP status code to send back */
   response.writeHead(statusCode, headers);
@@ -42,19 +60,8 @@ var handleRequest = function(request, response) {
    * anything back to the client until you do. The string you pass to
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
-  if(request.url === '/messages'){
-    console.log("this is what request-handler is sending to chatter box: "+ JSON.stringify(messages));
-    response.end(JSON.stringify(messages));
-    return;
-  }
 
-  // if(request.url === '/div'){
-  //   headers['Content-Type'] = "text/html";
-  //   response.end('<div>This is a div</div>');
-  //   return;
-  // }
-
-  response.end("Hello World");
+  response.end(JSON.stringify(toSend));
 };
 
 exports.handleRequest = handleRequest;

@@ -154,14 +154,15 @@ var composeMessage = function(userText) {
 var sendMessage = function(input) {
   var toSend = composeMessage(input);
   $.ajax({
-    url: 'https://api.parse.com/1/classes/chatterbox',
+    url: 'http://127.0.0.1:8080/messages',
+    // url: 'https://api.parse.com/1/classes/chatterbox',
     type: 'POST',
     data: JSON.stringify(toSend),
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
       $('.newMsg').val("  ");
-      getMessages();
+      // getMessages();
       // setTimeout(getMessages,5000);
     },
     error: function (data) {
