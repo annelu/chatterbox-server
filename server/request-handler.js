@@ -6,6 +6,15 @@
 //Where we store our messages
 var messages;
 
+var sendResponse = function(request,response,sendMe,contentType,status) {
+  status = status || 200;
+  contentType = contentType || 'text/html';
+  response.writeHeader(status,{'Content-Type': contentType});
+  response.write(sendMe);
+  response.end();
+};
+
+
  var handleRequest = function(request, response) {
   var toSend = "";
   var statusCode= 404;
@@ -23,9 +32,7 @@ var messages;
 
       fs.readFile('messages.json', {encoding: 'utf8'},function(err, json){
         if (err) {throw err;}
-        response.writeHeader(200, {'Content-Type': 'application/json'});
-        response.write(json);
-        response.end();
+        sendResponse(request, response, json, 'application/json');
       });
     }
 
@@ -52,47 +59,36 @@ var messages;
           fs.writeFile('messages.json', messages, function(err) {
             if (err) {throw err;}
           });
-
-          response.writeHeader(201, {'Content-Type': 'application/json'});
-          response.end(messages);
+          sendResponse(request, response, messages, 'application/json', 201);
         });
 
       });
     }
   }
 
+
+
+
   else if (requestURL[1] === "" && request.method === "GET"){
     fs.readFile('../client/index.html', function(err, html) {
-      if (err) {
-        throw err;
-      }
-      response.writeHeader(200, {'Content-Type': 'text/html'});
-      response.write(html);
-      response.end();
+      if (err) {throw err;}
+      sendResponse(request,response,html);
     });
   }
 
   else if (requestURL[1] === "scripts" && request.method === "GET"){ //Fix This line
     var file = requestURL[2];
     fs.readFile('../client/scripts/'+file, function(err, js) {
-      if (err) {
-        throw err;
-      }
-      response.writeHeader(200, {'Content-Type': 'text/javascript'});
-      response.write(js);
-      response.end();
+      if (err) {throw err;}
+      sendResponse(request,response,js,'text/javascript');
     });
   }
 
   else if (requestURL[1] === "styles" && request.method === "GET"){ //Fix This line
     var file = requestURL[2];
     fs.readFile('../client/styles/'+file, function(err, css) {
-      if (err) {
-        throw err;
-      }
-      response.writeHeader(200, {'Content-Type': 'text/css'});
-      response.write(css);
-      response.end();
+      if (err) {throw err;}
+      sendResponse(request, response, css, 'text/css');
     });
   }
 };
