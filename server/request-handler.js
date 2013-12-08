@@ -1,6 +1,4 @@
 
-/* * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
-
 //NODE MODULES
  var url = require('url');
  var fs = require('fs');
@@ -11,10 +9,8 @@ var messages;
  var handleRequest = function(request, response) {
   var toSend = "";
   var statusCode= 404;
-  // var requestURL = request.url.split("/").slice(1);
   var urlObject = url.parse(request.url);
   var requestURL = urlObject.pathname.split('/');
-  console.log(requestURL);
 
   /* Without this line, this server wouldn't work. See the note below about CORS. */
   var headers = defaultCorsHeaders;
@@ -24,11 +20,6 @@ var messages;
   if (requestURL[1] === 'classes') {
 
     if (request.method === "GET"){
-      // headers['Content-Type'] = 'application/json';
-      // statusCode = 200;
-      // toSend= JSON.stringify(messages);
-      // response.writeHead(statusCode, headers);
-      // response.end(toSend);
 
       fs.readFile('messages.json', {encoding: 'utf8'},function(err, json){
         if (err) {throw err;}
@@ -51,10 +42,8 @@ var messages;
 
         fs.readFile('messages.json', {encoding: 'utf8'},function(err, json){
           if (err) {throw err;}
-          console.log("line54 ",typeof json," " , json);
           messages=JSON.parse(json) || {};
           msgCount = messages.msgCount || 0;
-          console.log("after parsing ",messages);
           messages.messages = messages.messages || {};
           messages.messages[msgCount] = JSON.parse(fullbody);
           messages.msgCount = msgCount + 1;
@@ -85,7 +74,6 @@ var messages;
 
   else if (requestURL[1] === "scripts" && request.method === "GET"){ //Fix This line
     var file = requestURL[2];
-    console.log(file);
     fs.readFile('../client/scripts/'+file, function(err, js) {
       if (err) {
         throw err;
@@ -98,7 +86,6 @@ var messages;
 
   else if (requestURL[1] === "styles" && request.method === "GET"){ //Fix This line
     var file = requestURL[2];
-    console.log(file);
     fs.readFile('../client/styles/'+file, function(err, css) {
       if (err) {
         throw err;
@@ -112,11 +99,6 @@ var messages;
 
 exports.handleRequest = handleRequest;
 
-/* These headers will allow Cross-Origin Resource Sharing (CORS).
- * This CRUCIAL code allows this server to talk to websites that
- * are on different domains. (Your chat client is running from a url
- * like file://your/chat/client/index.html, which is considered a
- * different domain.) */
 var defaultCorsHeaders = {
   "access-control-allow-origin": "*",
   "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
