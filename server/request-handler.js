@@ -6,8 +6,7 @@
  var fs = require('fs');
 
 //Where we store our messages
- var messages = [];
-
+var messages;
 
  var handleRequest = function(request, response) {
   var toSend = "";
@@ -31,11 +30,10 @@
       // response.writeHead(statusCode, headers);
       // response.end(toSend);
 
-      fs.readFile('messages.txt', {encoding: 'utf8'},function(err, json){
+      fs.readFile('messages.json', {encoding: 'utf8'},function(err, json){
         if (err) {throw err;}
         response.writeHeader(200, {'Content-Type': 'application/json'});
-        console.log(json);
-        response.write(JSON.stringify(json));
+        response.write(json);
         response.end();
       });
     }
@@ -50,16 +48,28 @@
       });
 
       request.on('end', function(){
-        // fullbody = JSON.parse(fullbody);
-        toSend = JSON.stringify(messages);
-        fs.appendFile('messages.txt', fullbody, function(err) {
+
+        fs.readFile('messages.json', {encoding: 'utf8'},function(err, json){
           if (err) {throw err;}
+          console.log("line54 ",typeof json," " , json);
+          messages=JSON.parse(json) || {};
+          msgCount = messages.msgCount || 0;
+          console.log("after parsing ",messages);
+          messages.messages = messages.messages || {};
+          messages.messages[msgCount] = JSON.parse(fullbody);
+          messages.msgCount = msgCount + 1;
+          messages = JSON.stringify(messages);
+
+          fs.writeFile('messages.json', messages, function(err) {
+            if (err) {throw err;}
+          });
+
+          response.writeHeader(201, {'Content-Type': 'application/json'});
+          response.end(messages);
         });
-        response.writeHead(statusCode, headers);
-        response.end(toSend);
+
       });
     }
-
   }
 
   else if (requestURL[1] === "" && request.method === "GET"){

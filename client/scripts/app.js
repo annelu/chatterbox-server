@@ -75,9 +75,10 @@ var getMessages = function(){
     //     }
     //   },
     success: function (data) {
+      // data = JSON.parse(data);
       console.log(data);
       listOfMessages = [];
-      _.each(data, function(messageJSON){
+      _.each(data.messages, function(messageJSON){
         renderMessage(messageJSON);
       });
       printMessages(listOfMessages);
